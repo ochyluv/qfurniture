@@ -1,11 +1,12 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:qfurniture/ui/shared/colors.dart';
+import 'package:qfurniture/ui/shared/dumb_widgets/furniture_list_card.dart';
+import 'package:qfurniture/ui/shared/dumb_widgets/furniture_textfield.dart';
+import 'package:qfurniture/ui/shared/smart_widgets/product_card.dart';
+import 'package:qfurniture/ui/shared/spacing.dart';
+import 'package:qfurniture/ui/shared/text_styles.dart';
 import 'package:qfurniture/ui/views/home/home_viewmodel.dart';
-import 'package:qfurniture/ui/views/shared/colors.dart';
-import 'package:qfurniture/ui/views/shared/dumb_widgets/furniture_list_card.dart';
-import 'package:qfurniture/ui/views/shared/dumb_widgets/furniture_textfield.dart';
-import 'package:qfurniture/ui/views/shared/spacing.dart';
-import 'package:qfurniture/ui/views/shared/text_styles.dart';
+import 'package:qfurniture/utiliy/assets.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeView extends StatelessWidget {
@@ -61,6 +62,7 @@ class HomeView extends StatelessWidget {
                         verticalSpaceMedium,
                         FurnitureListTile(
                           title: 'Categories',
+                          onTap: model.goToProductDetailsView,
                         ),
                         verticalSpaceMedium,
                         SingleChildScrollView(
@@ -68,17 +70,17 @@ class HomeView extends StatelessWidget {
                           child: Row(
                             children: [
                               FurnitureListCard(
-                                image: 'assets/images/chair.png',
+                                image: Assets.chair,
                                 category: 'Chair',
                               ),
                               horizontalSpaceMedium,
                               FurnitureListCard(
-                                image: 'assets/images/sofa.png',
+                                image: Assets.sofa,
                                 category: 'Sofa',
                               ),
                               horizontalSpaceMedium,
                               FurnitureListCard(
-                                image: 'assets/images/desk.png',
+                                image: Assets.desk,
                                 category: 'Desk',
                               ),
                             ],
@@ -87,27 +89,28 @@ class HomeView extends StatelessWidget {
                         verticalSpaceMedium,
                         PercentageCard(
                           image: AssetImage(
-                            'assets/images/group_couch.png',
+                            Assets.groupCouch,
                           ),
                         ),
                         verticalSpaceMedium,
                         FurnitureListTile(
+                          onTap: model.goToProductDetailsView,
                           title: 'Popular',
                         ),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              PopularCard(
-                                image: 'assets/images/sverom_chair.png',
+                              ProductCard(
+                                image: Assets.sveromChair,
                                 title: 'Sverom Chair',
-                                amount: '400',
+                                amount: '\$400',
                               ),
                               horizontalSpaceMedium,
-                              PopularCard(
-                                image: 'assets/images/norrviken_chair_and_table.png',
+                              ProductCard(
+                                image: Assets.norrvikenChair,
                                 title: 'Norrviken Chair and Table',
-                                amount: '999',
+                                amount: '\$999',
                               ),
                             ],
                           ),
@@ -117,16 +120,16 @@ class HomeView extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: [
-                              PopularCard(
-                                image: 'assets/images/ektorp_sofa.png',
+                              ProductCard(
+                                image: Assets.ektorpSofa,
                                 title: 'Ektorp Sofa',
-                                amount: '599',
+                                amount: '\$599',
                               ),
                               horizontalSpaceMedium,
-                              PopularCard(
-                                image: 'assets/images/Jan_Sflanaganvik_sofa.png',
+                              ProductCard(
+                                image: Assets.JanSofa,
                                 title: 'Jan Sflanaganvik Sofa',
-                                amount: '599',
+                                amount: '\$599',
                               ),
                             ],
                           ),
@@ -134,7 +137,7 @@ class HomeView extends StatelessWidget {
                         verticalSpaceMedium,
                         PercentageCard(
                           image: AssetImage(
-                            'assets/images/confi_chair.png',
+                            Assets.confiChair,
                           ),
                         ),
                         verticalSpaceSmall,
@@ -153,15 +156,15 @@ class HomeView extends StatelessWidget {
                             children: [
                               RoomsFurnitures(
                                 room: 'Dinning\n' 'Room',
-                                image: 'assets/images/dinning_room.png',
+                                image: Assets.dinningRoom,
                               ),
                               RoomsFurnitures(
                                 room: 'Bed\n' 'Room',
-                                image: 'assets/images/bed_room.png',
+                                image: Assets.bedRoom,
                               ),
                               RoomsFurnitures(
                                 room: 'Office\n' 'Room',
-                                image: 'assets/images/office_space.png',
+                                image: Assets.officeSpace,
                               ),
                             ],
                           ),
@@ -178,8 +181,6 @@ class HomeView extends StatelessWidget {
       viewModelBuilder: () => HomeViewModel(),
     );
   }
-
-  // Child(CarouselController carouselController) {}
 }
 
 class RoomsFurnitures extends StatelessWidget {
@@ -264,100 +265,9 @@ class PercentageCard extends StatelessWidget {
                       image: DecorationImage(image: image, fit: BoxFit.fill),
                     ),
                   ),
-                  // decoration: BoxDecoration(
-                  //   image: DecorationImage(
-                  //     image: AssetImage(
-                  //       'assets/images/Indicator.png',
-                  //     ),
-                  //   ),
-                  // ),
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PopularCard extends StatelessWidget {
-  const PopularCard({
-    Key? key,
-    this.title = '',
-    required this.image,
-    required this.amount,
-    this.onFavoriteTap,
-    this.isFavoriteTap = false,
-  }) : super(key: key);
-
-  final void Function()? onFavoriteTap;
-  final String title;
-  final String image;
-  final String amount;
-  final bool isFavoriteTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      // elevation: 2,
-      child: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 200),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                Container(
-                  width: 150,
-                  height: 150,
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(0),
-                      image: DecorationImage(
-                        image: AssetImage(
-                          image,
-                        ),
-
-                        // fit: BoxFit.fill
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  right: 2,
-                  child: IconButton(
-                    icon: Icon(
-                      isFavoriteTap ? Icons.favorite : Icons.favorite_border,
-                      color: isFavoriteTap ? Colors.red : null,
-                    ),
-                    iconSize: 25,
-                    onPressed: onFavoriteTap,
-                  ),
-                ),
-              ],
-            ),
-            verticalSpaceSmall,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppStyle.kHeading5.copyWith(
-                      color: kTertiaryColor,
-                    ),
-                  ),
-                  Text(
-                    amount,
-                    style: AppStyle.kHeading2.copyWith(
-                      color: kTertiaryColor,
-                    ),
-                  ),
-                ],
-              ),
-            )
           ],
         ),
       ),
@@ -386,19 +296,23 @@ class FurnitureListTile extends StatelessWidget {
           style: AppStyle.kHeading1,
         ),
         Spacer(),
-        GestureDetector(
-          onTap: onTap,
-          child: Text(
-            'See all',
-            style: AppStyle.kHeading4.copyWith(
-              color: kPrimaryColor,
-            ),
+        TextButton(
+          onPressed: onTap,
+          child: Row(
+            children: [
+              Text(
+                'See all',
+                style: AppStyle.kHeading4.copyWith(
+                  color: kPrimaryColor,
+                ),
+              ),
+              horizontalSpaceSmall,
+              Icon(
+                Icons.arrow_forward,
+                color: kPrimaryColor,
+              ),
+            ],
           ),
-        ),
-        horizontalSpaceSmall,
-        Icon(
-          Icons.arrow_forward,
-          color: kPrimaryColor,
         ),
       ],
     );
